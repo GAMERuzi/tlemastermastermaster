@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Meyve Eşleştir</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff8ec;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #5a4e3c;
+    }
+    #game {
+      display: grid;
+      grid-template-columns: repeat(3, 80px);
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .tile {
+      width: 80px;
+      height: 80px;
+      background-color: #fff;
+      border: 2px solid #c4b6a4;
+      border-radius: 10px;
+      font-size: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    #slot {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .slot-tile {
+      width: 80px;
+      height: 80px;
+      border: 2px dashed #a39a8b;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+    }
+    button {
+      margin-top: 30px;
+      font-size: 18px;
+      padding: 10px 20px;
+      background-color: #90be6d;
+      color: white;
+      border: none;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Meyve Eşleştir</h1>
+  <div id="game"></div>
+  <div id="slot"></div>
+  <button onclick="resetGame()">Yeniden Başla</button>
+
+  <script>
+    const fruits = ["🍓", "🍎", "🍇", "🍉", "🍋", "🍊", "🥝", "🍍", "🥭"];
+    const slot = [];
+    const gameEl = document.getElementById("game");
+    const slotEl = document.getElementById("slot");
+
+    let tiles = [];
+
+    function createTiles() {
+      gameEl.innerHTML = "";
+      tiles = [];
+
+      let selected = [];
+      for (let i = 0; i < 3; i++) {
+        const fruit = fruits[Math.floor(Math.random() * fruits.length)];
+        selected.push(fruit, fruit, fruit);
+      }
+      selected = selected.sort(() => 0.5 - Math.random());
+
+      selected.forEach((fruit) => {
+        const tile = document.createElement("div");
+        tile.className = "tile";
+        tile.textContent = fruit;
+        tile.addEventListener("click", () => onTileClick(tile));
+        tiles.push(tile);
+        gameEl.appendChild(tile);
+      });
+    }
+
+    function onTileClick(tile) {
+      if (slot.length >= 7) return;
+
+      const newTile = document.createElement("div");
+      newTile.className = "slot-tile";
+      newTile.textContent = tile.textContent;
+      slotEl.appendChild(newTile);
+      slot.push(tile.textContent);
+
+      tile.remove();
+
+      checkMatch();
+    }
+
+    function checkMatch() {
+      const counts = {};
+      slot.forEach(fruit => {
+        counts[fruit] = (counts[fruit] || 0) + 1;
+      });
+
+      for (let fruit in counts) {
+        if (counts[fruit] === 3) {
+          // 3 eşleştiyse, slot'tan sil
+          const newSlot = [];
+          slotEl.innerHTML = "";
+          let removed = 0;
+          slot.forEach(f => {
+            if (f === fruit && removed < 3) {
+              removed++;
+            } else {
+              newSlot.push(f);
+              const tile = document.createElement("div");
+              tile.className = "slot-tile";
+              tile.textContent = f;
+              slotEl.appendChild(tile);
+            }
+          });
+          slot.length = 0;
+          newSlot.forEach(f => slot.push(f));
+        }
+      }
+    }
+
+    function resetGame() {
+      slot.length = 0;
+      slotEl.innerHTML = "";
+      createTiles();
+    }
+
+    createTiles();
+  </script>
+</body>
+</html>
