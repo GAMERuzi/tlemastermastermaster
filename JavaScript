@@ -1,0 +1,24 @@
+// Oyun başında kayıtlı veriyi yükle
+function loadGame() {
+  const savedLevel = localStorage.getItem("gameLevel");
+  const savedScore = localStorage.getItem("gameScore");
+
+  if (savedLevel) {
+    game.level = parseInt(savedLevel);
+  }
+  if (savedScore) {
+    game.score = parseInt(savedScore);
+  }
+}
+
+// Oyun sırasında verileri kaydet
+function saveGame() {
+  localStorage.setItem("gameLevel", game.level);
+  localStorage.setItem("gameScore", game.score);
+}
+
+// Her taş patladığında veya seviye geçilince çağır
+function updateAfterMove() {
+  updateUI();
+  saveGame();
+}
