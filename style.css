@@ -1,0 +1,167 @@
+/* Genel Ayarlar */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: #f9f6f2;
+  overflow: hidden;
+  user-select: none;
+}
+
+button {
+  font-size: 20px;
+  padding: 10px 25px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: none;
+  background-color: #6fbf73;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+button:hover {
+  background-color: #589b5c;
+}
+
+/* Ekranlar */
+.screen {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+  background: linear-gradient(to bottom, #fff0dc, #dcebcf);
+}
+.screen.active {
+  display: flex;
+}
+
+/* Başlangıç ve Bitirme Ekranı */
+h1, h2 {
+  color: #4a593b;
+  text-shadow: 1px 1px #c8d9b9;
+  margin-bottom: 10px;
+}
+
+/* Oyun Ekranı */
+#game-screen {
+  flex-direction: column;
+  background: url('https://i.imgur.com/RKo5AMc.jpg'); /* Hafif tahta doku */
+  background-size: cover;
+  position: relative;
+  padding: 20px;
+}
+
+/* Yaprak çerçeve efekti */
+#game-screen::before, #game-screen::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100px;
+  background: url('https://i.imgur.com/9VzNq3b.png') repeat-x;
+  z-index: 1;
+}
+#game-screen::before {
+  top: 0;
+  transform: scaleY(-1);
+}
+#game-screen::after {
+  bottom: 0;
+}
+
+/* Kutudaki Taşlar */
+#box-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 80px);
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Her meyve taşı */
+.fruit-tile {
+  width: 80px;
+  height: 80px;
+  background-color: #fff4ec;
+  border: 3px solid #e7c6a3;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.fruit-tile:hover {
+  transform: scale(1.1);
+}
+
+/* Tıklanamaz taş (üstü kapalıysa) */
+.blocked {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* Slot Alanı */
+#slot-bar {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+  z-index: 2;
+}
+.slot {
+  width: 80px;
+  height: 80px;
+  background: #fff6e5;
+  border: 2px dashed #a38d68;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Slot içindeki meyveler */
+.fruit-in-slot {
+  font-size: 40px;
+}
+
+/* Level & Skor */
+#level-counter, #score-counter {
+  font-weight: bold;
+  font-size: 18px;
+  margin: 5px 10px;
+  color: #3b4d2c;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 15px;
+  z-index: 2;
+}
+
+/* Responsive (mobil ve tablet) */
+@media screen and (max-width: 600px) {
+  #box-grid {
+    grid-template-columns: repeat(3, 70px);
+    gap: 8px;
+  }
+
+  .fruit-tile, .slot {
+    width: 70px;
+    height: 70px;
+  }
+
+  .fruit-in-slot {
+    font-size: 34px;
+  }
+
+  button {
+    font-size: 18px;
+    padding: 8px 18px;
+  }
+}
